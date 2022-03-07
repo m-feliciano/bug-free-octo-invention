@@ -9,10 +9,12 @@ import br.com.feliciano.forum.repository.CourseRepository;
 import br.com.feliciano.forum.repository.TopicRepository;
 import br.com.feliciano.forum.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,32 +37,33 @@ public class TopicsController {
     private UserRepository userRepository;
 
     @GetMapping
+    @Cacheable(value = "topicsList")
     public Page<TopicDTO> topics(
-            @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(value = "quantity", required = false, defaultValue = "10") Integer qtd
-    ) {
-        Pageable pageable = PageRequest.of(page, qtd, Sort.by("id").descending());
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return TopicDTO.converter(topicRepository.findAll(pageable));
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<TopicDetailsDTO> getTopicById(@PathVariable("id") Long id) {
+    public ResponseEntity<TopicDetailsDTO> getTopicById(
+            @PathVariable("id") Long id) {
         Topic topic = topicRepository.getById(id);
         return ResponseEntity.ok(new TopicDetailsDTO(topic));
     }
 
-    @GetMapping(value = "/course/{name}")
+    // Pagable or @RequestParam(value = "page", required = false) Integer customNames
+    @GetMapping(value = "/course")
     public Page<TopicDTO> getTopicByCourseName(
-            @PathVariable(value = "name") String courseName,
-            @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "quantity", required = false) Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
+            @RequestParam(value = "name") String courseName,
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return TopicDTO.converter(topicRepository.findAllByCourse_Name(courseName, pageable));
     }
 
     @PostMapping
-    @Transactional
-    public ResponseEntity<TopicDTO> save(@RequestBody @Valid TopicForm topicForm, UriComponentsBuilder uriBuilder) {
+    @Transactional // inform the spring to commit changes
+    @CacheEvict(value = "topicsList", allEntries = true) // refresh cache when this method is called
+    public ResponseEntity<TopicDTO> save(
+            @RequestBody @Valid TopicForm topicForm,
+            UriComponentsBuilder uriBuilder) {
         Topic topic = topicForm.converter(courseRepository, userRepository);
         topicRepository.save(topic);
         URI uri = uriBuilder.path("/topics/{id}").buildAndExpand(topic.getId()).toUri();
@@ -68,15 +71,19 @@ public class TopicsController {
     }
 
     @PutMapping("/{id}")
-    @Transactional
-    public ResponseEntity<TopicDTO> update(@PathVariable("id") Long id, @RequestBody @Valid UpdateTopicForm updateTopicForm) {
+    @Transactional // inform the spring to commit changes
+    @CacheEvict(value = "topicsList", allEntries = true) // refresh cache when this method is called
+    public ResponseEntity<TopicDTO> update(
+            @PathVariable("id") Long id,
+            @RequestBody @Valid UpdateTopicForm updateTopicForm) {
         Topic topic = updateTopicForm.update(id, topicRepository);
         return ResponseEntity.ok(new TopicDTO(topic));
     }
 
     @DeleteMapping(value = "/{id}")
-    @Transactional
-    public ResponseEntity remove(@PathVariable("id") Long id) {
+    @Transactional // inform the spring to commit changes
+    @CacheEvict(value = "topicsList", allEntries = true) // refresh cache when this method is called
+    public ResponseEntity<?> remove(@PathVariable("id") Long id) {
         topicRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
