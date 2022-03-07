@@ -9,6 +9,10 @@ import br.com.feliciano.forum.repository.CourseRepository;
 import br.com.feliciano.forum.repository.TopicRepository;
 import br.com.feliciano.forum.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +21,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 @Controller
 @RestController
@@ -32,8 +35,12 @@ public class TopicsController {
     private UserRepository userRepository;
 
     @GetMapping
-    public List<TopicDTO> topics() {
-        return TopicDTO.converter(topicRepository.findAll());
+    public Page<TopicDTO> topics(
+            @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+            @RequestParam(value = "quantity", required = false, defaultValue = "10") Integer qtd
+    ) {
+        Pageable pageable = PageRequest.of(page, qtd, Sort.by("id").descending());
+        return TopicDTO.converter(topicRepository.findAll(pageable));
     }
 
     @GetMapping(value = "/{id}")
@@ -43,8 +50,12 @@ public class TopicsController {
     }
 
     @GetMapping(value = "/course/{name}")
-    public List<TopicDTO> getTopicByCourseName(@PathVariable("name") String courseName) {
-        return TopicDTO.converter(topicRepository.findAllByCourse_Name(courseName));
+    public Page<TopicDTO> getTopicByCourseName(
+            @PathVariable(value = "name") String courseName,
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "quantity", required = false) Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return TopicDTO.converter(topicRepository.findAllByCourse_Name(courseName, pageable));
     }
 
     @PostMapping

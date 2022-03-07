@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @NoArgsConstructor
@@ -35,17 +36,26 @@ public class DbService {
         User user1 = new User("ana", "ana@ana", "ana123");
         User user2 = new User("bia", "bia@bia", "bia123");
 
-        Course course1 = new Course("Infrastructure as code", "DevOps");
+        Course course1 = new Course("IAC", "DevOps");
         Course course2 = new Course("AWS", "DevOps");
-        Course course3 = new Course("JavaEE", "Developer");
+        Course course3 = new Course("Java EE", "Developer");
+        Course course4 = new Course("Java JDBC", "Developer");
+        Course course5 = new Course("Java Web", "Developer");
 
         Topic t1 = new Topic("Console log", "Cannot update that using cmd", user1, course1);
+        t1.setCreatedDate(LocalDateTime.now().minusDays(1));
         Topic t2 = new Topic("AWS login", "Unable to access private user key", user2, course2);
+        t2.setCreatedDate(LocalDateTime.now().minusDays(2));
         Topic t3 = new Topic("Java Reflection Class", "Can't load the class using reflection", user1, course3);
+        t3.setCreatedDate(LocalDateTime.now().minusDays(3));
+        Topic t4 = new Topic("Java JDBC", "link localhost:3306 not working", user2, course4);
+        t4.setCreatedDate(LocalDateTime.now().minusDays(4));
+        Topic t5 = new Topic("Java WEB API", "Can't load the class using reflection", user1, course5);
+        t5.setCreatedDate(LocalDateTime.now().minusDays(5));
 
         userRepository.saveAll(Arrays.asList(user1, user2));
-        courseRepository.saveAll(Arrays.asList(course1, course2, course3));
-        topicRepository.saveAll(Arrays.asList(t1, t2, t3));
+        courseRepository.saveAll(Arrays.asList(course1, course2, course3, course4, course5));
+        topicRepository.saveAll(Arrays.asList(t1, t2, t3, t4,t5));
 
     }
 }

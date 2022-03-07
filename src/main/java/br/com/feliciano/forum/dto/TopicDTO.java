@@ -3,11 +3,10 @@ package br.com.feliciano.forum.dto;
 import br.com.feliciano.forum.domain.Topic;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -26,11 +25,8 @@ public class TopicDTO implements Serializable {
         this.localDateTime = topic.getCreatedDate();
     }
 
-    public static List<TopicDTO> converter(List<Topic> topics) {
-        return topics
-                .stream()
-                .map(TopicDTO::new)
-                .collect(Collectors.toList());
+    public static Page<TopicDTO> converter(Page<Topic> topics) {
+        return topics.map(TopicDTO::new);
     }
 
 }
