@@ -2,7 +2,6 @@ package br.com.feliciano.forum.domain;
 
 import br.com.feliciano.forum.domain.enums.StatusTopic;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -14,7 +13,6 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @ToString
 
 @Entity
@@ -42,6 +40,18 @@ public class Topic {
     @OneToMany(mappedBy = "topic")
     private List<Answer> answers = new ArrayList<>();
 
+    public Topic() {
+        this.createdDate = LocalDateTime.now();
+        this.status = StatusTopic.NOT_ANSWERED;
+    }
+
+    public Topic(String title, String message, Course course) {
+        this.title = title;
+        this.message = message;
+        this.createdDate = LocalDateTime.now();
+        this.status = StatusTopic.NOT_ANSWERED;
+        this.course = course;
+    }
 
     public Topic(String title, String message, LocalDateTime createdDate, User author, Course course) {
         this.title = title;
