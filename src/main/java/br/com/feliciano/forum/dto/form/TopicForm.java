@@ -2,7 +2,9 @@ package br.com.feliciano.forum.dto.form;
 
 import br.com.feliciano.forum.domain.Course;
 import br.com.feliciano.forum.domain.Topic;
+import br.com.feliciano.forum.domain.User;
 import br.com.feliciano.forum.repository.CourseRepository;
+import br.com.feliciano.forum.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +13,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -31,9 +34,12 @@ public class TopicForm {
     @NotEmpty(message = "Course's name must not be empty")
     @Length(min = 3, max = 50)
     private String courseName;
+    @NotNull
+    private Long author_id;
 
-    public Topic converter(CourseRepository repository) {
+    public Topic converter(CourseRepository repository, UserRepository authorRepository) {
         Course course = repository.findByName(courseName);
-        return new Topic(title, message, course);
+        Optional<User> author = authorRepository.findById(author_id);
+        return new Topic(title, message, author.get(), course);
     }
 }

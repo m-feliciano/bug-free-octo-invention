@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @NoArgsConstructor
@@ -40,11 +39,11 @@ public class DbService {
         Course course2 = new Course("AWS", "DevOps");
         Course course3 = new Course("JavaEE", "Developer");
 
-        Topic t1 = new Topic("Console log", "Cannot update that using cmd", LocalDateTime.now(), user1, course1);
-        Topic t2 = new Topic("AWS login", "Unable to access private user key", LocalDateTime.now(), user2, course2);
-        Topic t3 = new Topic("Java Reflection Class", "Can't load the class using reflection", LocalDateTime.now(), user1, course3);
+        Topic t1 = new Topic("Console log", "Cannot update that using cmd", user1, course1);
+        Topic t2 = new Topic("AWS login", "Unable to access private user key", user2, course2);
+        Topic t3 = new Topic("Java Reflection Class", "Can't load the class using reflection", user1, course3);
 
-        userRepository.saveAll(Arrays.asList(user1,user2));
+        userRepository.saveAll(Arrays.asList(user1, user2));
         courseRepository.saveAll(Arrays.asList(course1, course2, course3));
         topicRepository.saveAll(Arrays.asList(t1, t2, t3));
 

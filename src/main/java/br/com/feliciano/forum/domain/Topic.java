@@ -48,17 +48,17 @@ public class Topic {
     public Topic(String title, String message, Course course) {
         this.title = title;
         this.message = message;
+        this.course = course;
         this.createdDate = LocalDateTime.now();
         this.status = StatusTopic.NOT_ANSWERED;
-        this.course = course;
     }
 
-    public Topic(String title, String message, LocalDateTime createdDate, User author, Course course) {
+    public Topic(String title, String message, User author, Course course) {
         this.title = title;
         this.message = message;
-        this.createdDate = createdDate;
         this.author = author;
         this.course = course;
+        this.createdDate = LocalDateTime.now();
         this.status = StatusTopic.NOT_ANSWERED;
     }
 

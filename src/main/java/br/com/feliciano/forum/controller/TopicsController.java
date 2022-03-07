@@ -7,6 +7,7 @@ import br.com.feliciano.forum.dto.form.TopicForm;
 import br.com.feliciano.forum.dto.form.UpdateTopicForm;
 import br.com.feliciano.forum.repository.CourseRepository;
 import br.com.feliciano.forum.repository.TopicRepository;
+import br.com.feliciano.forum.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,8 @@ public class TopicsController {
     private TopicRepository topicRepository;
     @Autowired
     private CourseRepository courseRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping
     public List<TopicDTO> topics() {
@@ -47,7 +50,7 @@ public class TopicsController {
     @PostMapping
     @Transactional
     public ResponseEntity<TopicDTO> save(@RequestBody @Valid TopicForm topicForm, UriComponentsBuilder uriBuilder) {
-        Topic topic = topicForm.converter(courseRepository);
+        Topic topic = topicForm.converter(courseRepository, userRepository);
         topicRepository.save(topic);
         URI uri = uriBuilder.path("/topics/{id}").buildAndExpand(topic.getId()).toUri();
         return ResponseEntity.created(uri).body(new TopicDTO(topic));
