@@ -9,6 +9,6 @@ import lombok.Getter;
 public class TokenDTO {
 
 	private String token;
-	private String type;	
+	private String type;
 
 }
