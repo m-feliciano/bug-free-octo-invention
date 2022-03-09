@@ -20,6 +20,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import br.com.feliciano.forum.repository.UserRepository;
 import br.com.feliciano.forum.security.AuthenticationService;
 import br.com.feliciano.forum.security.TokenService;
 
@@ -36,9 +37,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private AuthenticationService authenticationService;
-	
+
 	@Autowired
 	private TokenService tokenService;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Override
 	@Bean
@@ -60,7 +64,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.anyRequest().authenticated().and().sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
-			.addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
+			.addFilterBefore(new TokenAuthenticationFilter(tokenService, userRepository),
+						UsernamePasswordAuthenticationFilter.class);
 
 		http.cors().and().csrf().disable(); // fix cors problem https://web.dev/cross-origin-resource-sharing/
 	}
