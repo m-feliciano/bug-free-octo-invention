@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 import lombok.AccessLevel;
@@ -15,6 +16,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 
 @Entity
 @Table(name = "tb_perfis")
@@ -29,6 +31,10 @@ public class Perfil implements GrantedAuthority {
 	private Long id;
 
 	private String name;
+
+	public Perfil(String name) {
+		this.name = name;
+	}
 
 	@Override
 	public String getAuthority() {
