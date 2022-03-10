@@ -29,7 +29,7 @@ import br.com.feliciano.forum.security.TokenService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String[] PUBLIC_MATCHERS = { "/h2-console/**" };
-	private static final String[] PUBLIC_MATCHERS_GET = { "/**", "/topics/**" };
+	private static final String[] PUBLIC_MATCHERS_GET = { "/**", "/topics/**", "/actuator/**"};
 	private static final String[] PUBLIC_MATCHERS_POST = { "/auth" };
 
 	@Autowired
@@ -77,7 +77,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override // static web resources(js, css, img, etc)
 	public void configure(WebSecurity web) throws Exception {
-		super.configure(web);
+		 web.ignoring()
+	        .antMatchers("/**.html", "/swagger-ui.html", "/v2/**", "/webjars/**", "/configuration/**", "/swagger-resources/**");
 	}
 
 	@Bean
