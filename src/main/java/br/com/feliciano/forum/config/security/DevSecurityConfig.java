@@ -17,12 +17,10 @@ import java.util.Arrays;
 @Profile("dev")
 public class DevSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String[] PUBLIC_MATCHERS = {"/**"};
-
     @Override // authorization
     protected void configure(HttpSecurity http) throws Exception {
-
-        http.authorizeRequests().antMatchers(PUBLIC_MATCHERS).permitAll();
+        http.authorizeRequests().antMatchers("/**").permitAll();
+        http.headers().frameOptions().disable();
         http.cors().and().csrf().disable(); // fix cors problem https://web.dev/cross-origin-resource-sharing/
     }
 
