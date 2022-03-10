@@ -1,48 +1,47 @@
 package br.com.feliciano.forum.security;
 
-import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
-
 import br.com.feliciano.forum.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class TokenService {
 
-	@Value("${forum.jwt.expiration}")
-	private String expiration;
+    @Value("${forum.jwt.expiration}")
+    private String expiration;
 
-	@Value("${forum.jwt.secret}")
-	private String secretKey;
+    @Value("${forum.jwt.secret}")
+    private String secretKey;
 
-	public String generateToken(Authentication auth) {
+    public String generateToken(Authentication auth) {
 
-		User userLogged = (User) auth.getPrincipal();
-		Date today = new Date();
-		Date expDate = new Date(today.getTime() + Long.parseLong(expiration));
+        User userLogged = (User) auth.getPrincipal();
+        Date today = new Date();
+        Date expDate = new Date(today.getTime() + Long.parseLong(expiration));
 
-		return Jwts.builder().setIssuer("API Forum").setSubject(userLogged.getId().toString()).setIssuedAt(today)
-				.setExpiration(expDate).signWith(SignatureAlgorithm.HS256, secretKey).compact();
-	}
+        return Jwts.builder().setIssuer("API Forum").setSubject(userLogged.getId().toString()).setIssuedAt(today)
+                .setExpiration(expDate).signWith(SignatureAlgorithm.HS256, secretKey).compact();
+    }
 
-	public boolean isTokenValid(String token) {
+    public boolean isTokenValid(String token) {
 
-		try {
-			Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
+        try {
+            Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
-	public Long getUserId(String token) {
-		Claims claims = Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token).getBody();
-		return Long.parseLong(claims.getSubject()); // return userId
-	}
+    public Long getUserId(String token) {
+        Claims claims = Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token).getBody();
+        return Long.parseLong(claims.getSubject()); // return userId
+    }
 
 }

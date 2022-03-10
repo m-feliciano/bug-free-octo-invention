@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class DefaultController {
 
-	@Value("${spring.application.name}")
-	private String appName;
+    @Value("${spring.application.name}")
+    private String appName;
 
-	@GetMapping
-	public String sayHello() {
-		return "Hello world from " + appName + "!";
-	}
+    @GetMapping
+    public String sayHello() {
+        return "Hello world from " + appName + "!";
+    }
 }

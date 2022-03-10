@@ -1,4 +1,4 @@
-package br.com.feliciano.forum.config;
+package br.com.feliciano.forum.config.security;
 
 import br.com.feliciano.forum.repository.UserRepository;
 import br.com.feliciano.forum.security.AuthenticationService;
@@ -6,6 +6,7 @@ import br.com.feliciano.forum.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,12 +26,13 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@Profile({"prod", "test"})
+public class ProdSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_MATCHERS = {"/h2-console/**"};
     private static final String[] PUBLIC_MATCHERS_GET = {"/**", "/topics/**", "/actuator/**"};
     private static final String[] PUBLIC_MATCHERS_POST = {"/auth"};
-	private static final String[] PUBLIC_MATCHERS_DELETE = {"/topics"};
+    private static final String[] PUBLIC_MATCHERS_DELETE = {"/topics"};
 
     @Autowired
     private Environment env;
@@ -60,7 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
                 .antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
-                .antMatchers(HttpMethod.DELETE, PUBLIC_MATCHERS_DELETE ).hasRole("MODERATOR")
+                .antMatchers(HttpMethod.DELETE, PUBLIC_MATCHERS_DELETE).hasRole("MODERATOR")
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .anyRequest().authenticated().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
