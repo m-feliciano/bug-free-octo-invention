@@ -2,7 +2,6 @@ package br.com.feliciano.forum.security;
 
 import br.com.feliciano.forum.domain.User;
 import br.com.feliciano.forum.repository.UserRepository;
-import br.com.feliciano.forum.security.TokenService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
