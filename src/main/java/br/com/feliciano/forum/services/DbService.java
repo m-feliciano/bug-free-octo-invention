@@ -53,15 +53,15 @@ public class DbService {
         Course course5 = new Course("Java Web", "Developer");
 
         Topic t1 = new Topic("Console log", "Cannot update that using cmd", user1, course1);
-        t1.setCreatedDate(LocalDateTime.now().minusDays(1));
+        t1.setCreatedDate(LocalDateTime.now().minusDays(5));
         Topic t2 = new Topic("AWS login", "Unable to access private user key", user2, course2);
-        t2.setCreatedDate(LocalDateTime.now().minusDays(2));
+        t2.setCreatedDate(LocalDateTime.now().minusDays(4));
         Topic t3 = new Topic("Java Reflection Class", "Can't load the class using reflection", user1, course3);
         t3.setCreatedDate(LocalDateTime.now().minusDays(3));
         Topic t4 = new Topic("Java JDBC", "link localhost:3306 not working", user2, course4);
-        t4.setCreatedDate(LocalDateTime.now().minusDays(4));
+        t4.setCreatedDate(LocalDateTime.now().minusDays(2));
         Topic t5 = new Topic("Java WEB API", "Can't load the class using reflection", user1, course5);
-        t5.setCreatedDate(LocalDateTime.now().minusDays(5));
+        t5.setCreatedDate(LocalDateTime.now().minusDays(1));
 
         perfilRepository.saveAll(Arrays.asList(perfil1, perfil2));
         userRepository.saveAll(Arrays.asList(user1, user2));

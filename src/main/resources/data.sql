@@ -25,14 +25,14 @@ INSERT INTO tb_course(category, name)
 VALUES ('Developer', 'Java JDBC');
 
 INSERT INTO tb_topic (created_date, message, status, title, author_id, course_id)
-VALUES ('2022-03-09 16:18:34.359286', 'Cannot update that using cmd', 'NOT_ANSWERED', 'Console log', 1, 1);
+VALUES ('2022-03-05 03:18:34.359286', 'Cannot update that using cmd', 'NOT_ANSWERED', 'Console log', 1, 1);
 INSERT INTO tb_topic (created_date, message, status, title, author_id, course_id)
-VALUES ('2022-03-09 16:18:34.359286', 'Unable to access private user key', 'NOT_ANSWERED', 'AWS login', 2, 2);
+VALUES ('2022-03-06 11:18:34.359286', 'Unable to access private user key', 'NOT_ANSWERED', 'AWS login', 2, 2);
 INSERT INTO tb_topic (created_date, message, status, title, author_id, course_id)
-VALUES ('2022-03-09 16:18:34.359286', 'Can''t load the class using reflection', 'NOT_ANSWERED', 'Java Reflection Class',
+VALUES ('2022-03-07 22:18:34.359286', 'Can''t load the class using reflection', 'NOT_ANSWERED', 'Java Reflection Class',
         1, 3);
 INSERT INTO tb_topic (created_date, message, status, title, author_id, course_id)
-VALUES ('2022-03-09 16:18:34.359286', 'link localhost:3306 not working', 'NOT_ANSWERED', 'Java JDBC', 2, 4);
+VALUES ('2022-03-08 10:18:34.359286', 'link localhost:3306 not working', 'NOT_ANSWERED', 'Java JDBC', 2, 4);
 INSERT INTO tb_topic (created_date, message, status, title, author_id, course_id)
-VALUES ('2022-03-09 16:18:34.359286', 'Can''t load the class using reflection', 'NOT_ANSWERED', 'Java WEB API', 1, 5);
+VALUES ('2022-03-09 06:18:34.359286', 'Can''t load the class using reflection', 'NOT_ANSWERED', 'Java WEB API', 1, 5);
 

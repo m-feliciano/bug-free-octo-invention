@@ -2,6 +2,7 @@ package br.com.feliciano.forum.config.security;
 
 import br.com.feliciano.forum.repository.UserRepository;
 import br.com.feliciano.forum.security.AuthenticationService;
+import br.com.feliciano.forum.security.TokenAuthenticationFilter;
 import br.com.feliciano.forum.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

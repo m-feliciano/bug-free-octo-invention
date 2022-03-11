@@ -1,4 +1,4 @@
-package br.com.feliciano.forum.config.security;
+package br.com.feliciano.forum.security;
 
 import br.com.feliciano.forum.domain.User;
 import br.com.feliciano.forum.repository.UserRepository;
